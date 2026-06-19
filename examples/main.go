@@ -7,16 +7,16 @@ import (
 	"os"
 
 	"github.com/gin-gonic/gin"
-	koanf "github.com/pucora/velonetics-koanf"
+	koanf "github.com/pucora/pucora-koanf"
 	"github.com/pucora/lura/v2/config"
 	"github.com/pucora/lura/v2/logging"
 	"github.com/pucora/lura/v2/proxy"
-	veloneticsgin "github.com/pucora/lura/v2/router/gin"
+	pucoragin "github.com/pucora/lura/v2/router/gin"
 	"github.com/pucora/lura/v2/router/gorilla"
 	"github.com/pucora/lura/v2/router/mux"
 
-	metricsgin "github.com/pucora/velonetics-metrics/v2/gin"
-	metricsmux "github.com/pucora/velonetics-metrics/v2/mux"
+	metricsgin "github.com/pucora/pucora-metrics/v2/gin"
+	metricsmux "github.com/pucora/pucora-metrics/v2/mux"
 )
 
 func main() {
@@ -71,9 +71,9 @@ func main() {
 		pf := proxy.NewDefaultFactory(metric.DefaultBackendFactory(), logger)
 
 		engine := gin.Default()
-		routerFactory := veloneticsgin.NewFactory(veloneticsgin.Config{
+		routerFactory := pucoragin.NewFactory(pucoragin.Config{
 			// declare the instrumented router handler
-			HandlerFactory: metric.NewHTTPHandlerFactory(veloneticsgin.EndpointHandler),
+			HandlerFactory: metric.NewHTTPHandlerFactory(pucoragin.EndpointHandler),
 			// inject the instrumented proxy factory over the previously created one
 			ProxyFactory: metric.ProxyFactory("pipe", pf),
 			// other boring stuff...

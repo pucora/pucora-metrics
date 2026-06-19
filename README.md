@@ -13,8 +13,8 @@ There are the avaliable middlewares to add to the Pucora pipes.
 
 ## Available router flavours
 
-1. [mux](github.com/pucora/velonetics-metrics/blob/master/mux) Mux based routers and handlers
-2. [gin](github.com/pucora/velonetics-metrics/blob/master/gin) Gin based routers and handlers
+1. [mux](github.com/pucora/pucora-metrics/blob/master/mux) Mux based routers and handlers
+2. [gin](github.com/pucora/pucora-metrics/blob/master/gin) Gin based routers and handlers
 
 Check the examples and the documentation for more details
 
@@ -37,7 +37,7 @@ Or configure the collection time of metrics:
 This configuration will set the _collection time_ to 2 minutes and will disable the proxy metrics collector (backend and router metrics will be enabled since the default for all layers is to be enabled).
 ```
   "extra_config": {
-    "github_com/pucora/velonetics-metrics": {
+    "github_com/pucora/pucora-metrics": {
       "collection_time": "2m",
       "proxy_disabled": true,
     }
@@ -47,6 +47,6 @@ This configuration will set the _collection time_ to 2 minutes and will disable 
   or leave the defaults:
   ```
   "extra_config": {
-    github_com/pucora/velonetics-metrics": {}
+    github_com/pucora/pucora-metrics": {}
   }
   ```

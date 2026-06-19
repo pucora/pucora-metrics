@@ -1,10 +1,10 @@
-module github.com/pucora/velonetics-metrics/v2
+module github.com/pucora/pucora-metrics/v2
 
 go 1.25.3
 
 require (
 	github.com/gin-gonic/gin v1.9.1
-	github.com/pucora/velonetics-koanf v1.0.0
+	github.com/pucora/pucora-koanf v1.0.0
 	github.com/pucora/lura/v2 v2.0.0
 	github.com/rcrowley/go-metrics v0.0.0-20180406234716-d932a24a8ccb
 )

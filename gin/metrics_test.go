@@ -13,11 +13,11 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
-	metrics "github.com/pucora/velonetics-metrics/v2"
+	metrics "github.com/pucora/pucora-metrics/v2"
 	"github.com/pucora/lura/v2/config"
 	"github.com/pucora/lura/v2/logging"
 	"github.com/pucora/lura/v2/proxy"
-	veloneticsgin "github.com/pucora/lura/v2/router/gin"
+	pucoragin "github.com/pucora/lura/v2/router/gin"
 )
 
 func TestDisabledRouterMetrics(t *testing.T) {
@@ -27,8 +27,8 @@ func TestDisabledRouterMetrics(t *testing.T) {
 	l, _ := logging.NewLogger("DEBUG", buf, "")
 	cfg := map[string]interface{}{metrics.Namespace: map[string]interface{}{"router_disabled": true}}
 	metric := New(ctx, cfg, l)
-	hf := metric.NewHTTPHandlerFactory(veloneticsgin.EndpointHandler)
-	if reflect.ValueOf(hf).Pointer() != reflect.ValueOf(veloneticsgin.EndpointHandler).Pointer() {
+	hf := metric.NewHTTPHandlerFactory(pucoragin.EndpointHandler)
+	if reflect.ValueOf(hf).Pointer() != reflect.ValueOf(pucoragin.EndpointHandler).Pointer() {
 		t.Error("The endpoint handler should be the default since the Router metrics are disabled.")
 	}
 }
@@ -54,7 +54,7 @@ func TestNew(t *testing.T) {
 		time.Sleep(time.Microsecond * time.Duration(rand.Intn(dMax-dMin)+dMin)) // skipcq: GSC-G404
 		return &response, nil
 	}
-	hf := metric.NewHTTPHandlerFactory(veloneticsgin.EndpointHandler)
+	hf := metric.NewHTTPHandlerFactory(pucoragin.EndpointHandler)
 	cfg := &config.EndpointConfig{
 		Endpoint: "/test/{var}",
 		Timeout:  10 * time.Second,

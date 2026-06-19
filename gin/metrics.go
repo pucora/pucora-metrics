@@ -12,10 +12,10 @@ import (
 	"github.com/pucora/lura/v2/config"
 	"github.com/pucora/lura/v2/logging"
 	"github.com/pucora/lura/v2/proxy"
-	veloneticsgin "github.com/pucora/lura/v2/router/gin"
+	pucoragin "github.com/pucora/lura/v2/router/gin"
 
-	metrics "github.com/pucora/velonetics-metrics/v2"
-	"github.com/pucora/velonetics-metrics/v2/mux"
+	metrics "github.com/pucora/pucora-metrics/v2"
+	"github.com/pucora/pucora-metrics/v2/mux"
 )
 
 // New creates a new metrics producer with support for the gin router
@@ -76,7 +76,7 @@ func (m *Metrics) NewExpHandler() gin.HandlerFunc {
 }
 
 // NewHTTPHandlerFactory wraps a handler factory adding some simple instrumentation to the generated handlers
-func (m *Metrics) NewHTTPHandlerFactory(hf veloneticsgin.HandlerFactory) veloneticsgin.HandlerFactory {
+func (m *Metrics) NewHTTPHandlerFactory(hf pucoragin.HandlerFactory) pucoragin.HandlerFactory {
 	if m.Config == nil || m.Config.RouterDisabled {
 		return hf
 	}
@@ -84,7 +84,7 @@ func (m *Metrics) NewHTTPHandlerFactory(hf veloneticsgin.HandlerFactory) velonet
 }
 
 // NewHTTPHandlerFactory wraps a handler factory adding some simple instrumentation to the generated handlers
-func NewHTTPHandlerFactory(rm *metrics.RouterMetrics, hf veloneticsgin.HandlerFactory) veloneticsgin.HandlerFactory {
+func NewHTTPHandlerFactory(rm *metrics.RouterMetrics, hf pucoragin.HandlerFactory) pucoragin.HandlerFactory {
 	return func(cfg *config.EndpointConfig, p proxy.Proxy) gin.HandlerFunc {
 		next := hf(cfg, p)
 		rm.RegisterResponseWriterMetrics(cfg.Endpoint)

@@ -14,7 +14,7 @@ import (
 	"testing"
 	"time"
 
-	veloneticsmetrics "github.com/pucora/velonetics-metrics/v2"
+	pucorametrics "github.com/pucora/pucora-metrics/v2"
 	"github.com/pucora/lura/v2/config"
 	"github.com/pucora/lura/v2/logging"
 	"github.com/pucora/lura/v2/proxy"
@@ -27,7 +27,7 @@ func TestDisabledRouterMetrics(t *testing.T) {
 	defer cancel()
 	buf := bytes.NewBuffer(make([]byte, 1024))
 	l, _ := logging.NewLogger("DEBUG", buf, "")
-	cfg := map[string]interface{}{veloneticsmetrics.Namespace: map[string]interface{}{"router_disabled": true}}
+	cfg := map[string]interface{}{pucorametrics.Namespace: map[string]interface{}{"router_disabled": true}}
 	metric := New(ctx, cfg, l)
 	hf := metric.NewHTTPHandlerFactory(mux.EndpointHandler)
 	if reflect.ValueOf(hf).Pointer() != reflect.ValueOf(mux.EndpointHandler).Pointer() {
@@ -44,7 +44,7 @@ func TestNew(t *testing.T) {
 	defer cancel()
 	buf := bytes.NewBuffer(make([]byte, 1024))
 	l, _ := logging.NewLogger("DEBUG", buf, "")
-	metricsCfg := map[string]interface{}{veloneticsmetrics.Namespace: map[string]interface{}{"collection_time": "1s"}}
+	metricsCfg := map[string]interface{}{pucorametrics.Namespace: map[string]interface{}{"collection_time": "1s"}}
 	metric := New(ctx, metricsCfg, l)
 
 	response := proxy.Response{Data: map[string]interface{}{}, IsComplete: true}
@@ -114,7 +114,7 @@ func TestNew(t *testing.T) {
 func TestNewHTTPHandler(t *testing.T) {
 	registry := metrics.NewRegistry()
 
-	rm := veloneticsmetrics.NewRouterMetrics(&registry)
+	rm := pucorametrics.NewRouterMetrics(&registry)
 	assertion := func(w http.ResponseWriter, _ *http.Request) {
 		time.Sleep(time.Millisecond)
 		w.Header().Set("x-test", "ok")
@@ -202,7 +202,7 @@ func TestStatsEndpoint(t *testing.T) {
 	defer cancel()
 	buf := bytes.NewBuffer(make([]byte, 1024))
 	l, _ := logging.NewLogger("DEBUG", buf, "")
-	cfg := map[string]interface{}{veloneticsmetrics.Namespace: map[string]interface{}{"collection_time": "100ms", "listen_address": ":8999"}}
+	cfg := map[string]interface{}{pucorametrics.Namespace: map[string]interface{}{"collection_time": "100ms", "listen_address": ":8999"}}
 	_ = New(ctx, cfg, l)
 	<-time.After(500 * time.Millisecond)
 	resp, err := http.Get("http://localhost:8999/__stats")

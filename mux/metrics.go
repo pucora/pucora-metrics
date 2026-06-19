@@ -18,12 +18,12 @@ import (
 	"github.com/rcrowley/go-metrics"
 	"github.com/rcrowley/go-metrics/exp"
 
-	veloneticsmetrics "github.com/pucora/velonetics-metrics/v2"
+	pucorametrics "github.com/pucora/pucora-metrics/v2"
 )
 
 // New creates a new metrics producer with support for the mux router
 func New(ctx context.Context, e config.ExtraConfig, l logging.Logger) *Metrics {
-	metricsCollector := Metrics{veloneticsmetrics.New(ctx, e, l)}
+	metricsCollector := Metrics{pucorametrics.New(ctx, e, l)}
 	if metricsCollector.Config != nil && !metricsCollector.Config.EndpointDisabled {
 		metricsCollector.RunEndpoint(ctx, metricsCollector.NewEngine(), l)
 	}
@@ -32,7 +32,7 @@ func New(ctx context.Context, e config.ExtraConfig, l logging.Logger) *Metrics {
 
 // Metrics is the component that manages all the metrics for the mux-based gateways
 type Metrics struct {
-	*veloneticsmetrics.Metrics
+	*pucorametrics.Metrics
 }
 
 // RunEndpoint runs the *gin.Engine (that should have the stats endpoint) with the logger
@@ -87,7 +87,7 @@ func NewExpHandler(parent *metrics.Registry) http.Handler {
 }
 
 // NewHTTPHandler wraps an http.Handler adding some simple instrumentation to the handler
-func NewHTTPHandler(name string, h http.Handler, rm *veloneticsmetrics.RouterMetrics) http.HandlerFunc {
+func NewHTTPHandler(name string, h http.Handler, rm *pucorametrics.RouterMetrics) http.HandlerFunc {
 	rm.RegisterResponseWriterMetrics(name)
 	return func(w http.ResponseWriter, r *http.Request) {
 		rm.Connection(r.TLS)
@@ -98,7 +98,7 @@ func NewHTTPHandler(name string, h http.Handler, rm *veloneticsmetrics.RouterMet
 	}
 }
 
-func newHTTPResponseWriter(name string, rw http.ResponseWriter, rm *veloneticsmetrics.RouterMetrics) *responseWriter {
+func newHTTPResponseWriter(name string, rw http.ResponseWriter, rm *pucorametrics.RouterMetrics) *responseWriter {
 	return &responseWriter{
 		ResponseWriter: rw,
 		begin:          time.Now(),
@@ -112,7 +112,7 @@ type responseWriter struct {
 	http.ResponseWriter
 	begin        time.Time
 	name         string
-	rm           *veloneticsmetrics.RouterMetrics
+	rm           *pucorametrics.RouterMetrics
 	responseSize int
 	status       int
 }

@@ -1,6 +1,6 @@
 // Package metrics defines a set of basic building blocks for instrumenting Pucora gateways
 //
-// Check the "github.com/pucora/velonetics-metrics/gin" and "github.com/pucora/velonetics-metrics/mux"
+// Check the "github.com/pucora/pucora-metrics/gin" and "github.com/pucora/pucora-metrics/mux"
 // packages for complete implementations
 package metrics
 
@@ -50,7 +50,7 @@ func New(ctx context.Context, e config.ExtraConfig, l logging.Logger) *Metrics {
 }
 
 // Namespace is the key to look for extra configuration details
-const Namespace = "github_com/pucora/velonetics-metrics"
+const Namespace = "github_com/pucora/pucora-metrics"
 
 // Config holds if a component is active or not
 type Config struct {
